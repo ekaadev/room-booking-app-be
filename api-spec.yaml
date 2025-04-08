@@ -1,0 +1,927 @@
+openapi: 3.0.0
+info:
+  title: Room Booking App API 3.0.0
+  # TODO: PLEASE CREATE DESCRIPTION
+  description: "TODO: PLEASE CREATE DESCRIPTION"
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+paths:
+  /users:
+    # TODO: IMPLEMENTATION JWT!
+    post:
+      tags: 
+        - users
+      description: "Create new users"
+      summary: "Create new users"
+      requestBody:
+        required: true
+        description: "request body create new users"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                role_id:
+                  type: string
+      responses:
+        200:
+          description: "Success create new users"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties: 
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role_id:
+                        type: string
+                      creted_at:
+                        type: string
+                      updated_at:
+                        type: string
+  /users/login:
+    # TODO: IMPLEMENTATION JWT!
+    post:
+      tags:
+        - users
+      description: "User login and create token"
+      summary: "User login"
+      requestBody: 
+        required: true
+        description: "request body login user"
+        content: 
+          application/json: 
+            schema: 
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200: 
+          description: "success login"
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      token: 
+                        type: string
+  /users/current:
+    # TODO: IMPLEMENTATION JWT!
+    get:
+      tags: 
+          - users
+      description: "Get current users"
+      summary: "Get current users"
+      # TODO: ADD ATTRIBUTE IN REQUEST HEADER!
+      responses:
+        200:
+          description: "Success get todo by id"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      role_id:
+                        type: string
+    patch:
+      # TODO: IMPLEMENTATION JWT!
+      tags: 
+          - users
+      description: "Update current users"
+      summary: "Update current users"
+      # TODO: ADD ATTRIBUTE IN REQUEST HEADER!
+      requestBody:
+        description: "request body update new todo"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: "Success update Todo"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+  /users/logout:
+    # TODO: IMPLEMENTATION JWT!
+    delete:
+      tags:
+        - users
+      description: "Delete session users"
+      summary: "Delete session users"
+      # TODO: ADD ATTRIBUTE IN REQUEST HEADER!
+      responses:
+        200:
+          description: "Success delete session users"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+  /rooms:
+    post:
+      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      tags:
+        - rooms
+      description: "Create new rooms"
+      summary: "Create new rooms"
+      requestBody: 
+        required: true
+        description: "Request body create a new room"
+        content: 
+          application/json: 
+            schema:
+              type: object
+              properties: 
+                name:
+                  type: string
+                location:
+                  type: string
+                capacity:
+                  type: number
+      responses:
+        200:
+          description: "Success create new room"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      name:
+                        type: string
+                      location:
+                        type: string
+                      capacity:
+                        type: number
+    get:
+      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      tags:
+        - rooms
+      description: "Get all rooms"
+      summary: "Get all rooms"
+      responses:
+        200:
+          description: "success get all rooms"
+          content: 
+            application/json: 
+              schema: 
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items: 
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        name:
+                          type: string
+                        location:
+                          type: string
+                        capacity:
+                          type: number
+  /rooms/{roomId}:
+    patch:
+      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      tags:
+        - rooms
+      description: "Update a room by id"
+      summary: "Update a room by id"
+      parameters: 
+        - in: path
+          name: roomId
+          schema:
+            type: integer
+          required: true
+          description: "Numeric ID of the room to get"
+      requestBody: 
+        description: "request body update room"
+        content: 
+          application/json: 
+            schema:
+              type: object
+              properties: 
+                name:
+                  type: string
+                location:
+                  type: string
+                capacity:
+                  type: number
+      responses:
+        200:
+          description: "Success update a room"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      name:
+                        type: string
+                      location:
+                        type: string
+                      capacity:
+                        type: number
+    get:
+      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      tags:
+        - rooms
+      description: "Get a room by id"
+      summary: "Get a room by id"
+      parameters: 
+        - in: path
+          name: roomId
+          schema:
+            type: integer
+          required: true
+          description: "Numeric ID of the room to get"
+      responses:
+        200:
+          description: "Success get a room by id"
+          content:
+            appliaction/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      name:
+                        type: string
+                      location:
+                        type: string
+                      capacity:
+                        type: number
+    delete:
+      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      tags:
+        - rooms
+      description: "Delete a room by id"
+      summary: "Delete a room by id"
+      parameters: 
+        - in: path
+          name: roomId
+          schema:
+            type: integer
+          required: true
+          description: "Numeric ID of the room to get"
+      responses:
+        200:
+          description: "Success delete a room by id"
+          content:
+            appliaction/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+  /rooms/{roomId}/schedules:
+    # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+    get:
+      tags:
+      - schdules
+      description: "Get all schedules in a room"
+      summary: "Get all schedules in a room"
+      parameters: 
+          - in: path
+            name: roomId
+            schema:
+              type: integer
+            required: true
+            description: "Numeric ID of the room to get"
+      responses:
+        200:
+          description: "success get all schedules in a room"
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: array 
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        day_of_week:
+                          type: string
+                        open_time:
+                          type: string
+                        close_time:
+                          type: string
+    post:
+      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      tags:
+        - schdules
+      description: "Create a new schedule in a room"
+      summary: "Create a new schedule in a room"
+      parameters: 
+          - in: path
+            name: roomId
+            schema:
+              type: integer
+            required: true
+            description: "Numeric ID of the room to get"
+      requestBody:
+        description: "request body for create new schedule in a room"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                day_of_week:
+                  type: string
+                open_time:
+                  type: string
+                close_time:
+                  type: string
+      responses:
+        200:
+          description: "success create new schedule in a room"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                        id:
+                          type: number
+                        day_of_week:
+                          type: string
+                        open_time:
+                          type: string
+                        close_time:
+                          type: string
+  /rooms/{roomId}/schedules/{scheduleId}:
+    # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+    patch:
+      tags:
+        - schdules
+      description: "Update schedule in a room"
+      summary: "Update schedule in a room"
+      parameters: 
+          - in: path
+            name: roomId
+            schema:
+              type: integer
+            required: true
+            description: "Numeric ID of the user to get"
+          - in: path
+            name: scheduleId
+            schema:
+              type: integer
+            required: true
+            description: "Numeric ID of the schedule to get"
+      requestBody:
+        description: "request body for update schedule in a room"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                day_of_week:
+                  type: string
+                open_time:
+                  type: string
+                close_time:
+                  type: string
+      responses:
+        200:
+          description: "success update schedule in a room"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                        id:
+                          type: number
+                        day_of_week:
+                          type: string
+                        open_time:
+                          type: string
+                        close_time:
+                          type: string
+    delete:
+      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      tags:
+        - schdules
+      description: "Delete schedule in a room"
+      summary: "Delete schedule in a room"
+      parameters: 
+          - in: path
+            name: roomId
+            schema:
+              type: integer
+            required: true
+            description: "Numeric ID of the room to get"
+          - in: path
+            name: scheduleId
+            schema:
+              type: integer
+            required: true
+            description: "Numeric ID of the schedule to get"
+      responses:
+        200:
+          description: "Success delete schedule in a room"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+  /rooms/{roomId}/reservations:
+    # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+    get:
+      tags:
+      - reservations
+      description: "Get all reservations in a room"
+      summary: "Get all reservations in a room"
+      parameters: 
+            - in: path
+              name: roomId
+              schema:
+                type: integer
+              required: true
+              description: "Numeric ID of the room to get"
+      responses:
+        200:
+          description: "success get all reservations in a room"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user_id:
+                          type: number
+                        status:
+                          type: string
+                        start_time:
+                          type: string
+                        end_time:
+                          type: string
+                        purpose:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+  /rooms/{roomId}/reservations/{reservationId}:
+    patch:
+    # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      tags:
+        - reservations
+      description: "Update reservation in a room"
+      summary: "Update reservation in a room"
+      parameters: 
+            - in: path
+              name: roomId
+              schema:
+                type: integer
+              required: true
+              description: "Numeric ID of the room to get"
+            - in: path
+              name: reservationId
+              schema:
+                type: integer
+              required: true
+              description: "Numeric ID of the reservation to get"
+      requestBody:
+        description: "request body for update reservation in a room"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                start_time:
+                  type: string
+                end_time:
+                  type: string
+                purpose:
+                  type: string
+      responses:
+       200:
+          description: "success update reservation in a room"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                        user_id:
+                          type: number
+                        status:
+                          type: string
+                        start_time:
+                          type: string
+                        end_time:
+                          type: string
+                        purpose:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+    delete:
+    # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      tags:
+        - reservations
+      description: "Delete reservation in a room"
+      summary: "Delete reservation in a room"
+      parameters: 
+            - in: path
+              name: roomId
+              schema:
+                type: integer
+              required: true
+              description: "Numeric ID of the room to get"
+            - in: path
+              name: reservationId
+              schema:
+                type: integer
+              required: true
+              description: "Numeric ID of the reservation to get"
+      responses:
+        200:
+          description: "success delete reservation in a room"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+  /users/{userId}/reservations:
+    get:
+      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      tags:
+        - reservations
+      description: "Get all reservation in user"
+      summary: "Get all reservation in user"
+      parameters: 
+            - in: path
+              name: userId
+              schema:
+                type: integer
+              required: true
+              description: "Numeric ID of the user to get"
+      responses:
+        200:
+          description: "success get all reservation in user"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        room_id:
+                          type: number
+                        status:
+                          type: string
+                        start_time:
+                          type: string
+                        end_time:
+                          type: string
+                        purpose:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+  /users/{userId}/reservations/{reservationId}:
+    patch:
+    # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      tags:
+        - reservations
+      description: "Update reservation in user"
+      summary: "Update reservation in user"
+      parameters: 
+            - in: path
+              name: userId
+              schema:
+                type: integer
+              required: true
+              description: "Numeric ID of the user to get"
+            - in: path
+              name: reservationId
+              schema:
+                type: integer
+              required: true
+              description: "Numeric ID of the reservation to get"
+      requestBody:
+        description: "request body for update reservation in a user"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                start_time:
+                  type: string
+                end_time:
+                  type: string
+                purpose:
+                  type: string
+      responses:
+       200:
+          description: "success update reservation in a user"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                        room_id:
+                          type: number
+                        status:
+                          type: string
+                        start_time:
+                          type: string
+                        end_time:
+                          type: string
+                        purpose:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+    delete:
+    # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      tags:
+        - reservations
+      description: "Delete reservation in user"
+      summary: "Delete reservation in user"
+      parameters: 
+            - in: path
+              name: userId
+              schema:
+                type: integer
+              required: true
+              description: "Numeric ID of the room to get"
+            - in: path
+              name: reservationId
+              schema:
+                type: integer
+              required: true
+              description: "Numeric ID of the reservation to get"
+      responses:
+        200:
+          description: "success delete reservation in a room"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+  /reservations:
+    get:
+      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      tags:
+        - reservations
+      description: "Get all reservation"
+      summary: "Get all reservation"
+      responses:
+        200:
+          description: "success get all reservation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user_id:
+                          type: number
+                        room_id:
+                          type: number
+                        status:
+                          type: string
+                        start_time:
+                          type: string
+                        end_time:
+                          type: string
+                        purpose:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+    post:
+      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      tags:
+        - reservations
+      description: "Create a new reservation"
+      summary: "Create a new reservation"
+      requestBody:
+        description: "request body for create a reservation"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: number
+                room_id:
+                  type: number
+                status:
+                  type: string
+                start_time:
+                  type: string
+                end_time:
+                  type: string
+                purpose:
+                  type: string
+      responses:
+        200:
+          description: "success create a new reservation"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      user_id:
+                        type: number
+                      room_id:
+                        type: number
+                      status:
+                        type: string
+                      start_time:
+                        type: string
+                      end_time:
+                        type: string
+                      purpose:
+                        type: string
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
