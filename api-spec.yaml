@@ -1,187 +1,117 @@
 openapi: 3.0.0
 info:
   title: Room Booking App API 3.0.0
-  # TODO: PLEASE CREATE DESCRIPTION
-  description: "TODO: PLEASE CREATE DESCRIPTION"
+  description: Room Booking App API Documentation
   version: 1.0.0
 servers:
   - url: http://localhost:3000/api
 paths:
-  /users:
-    # TODO: IMPLEMENTATION JWT!
-    post:
-      tags: 
-        - users
-      description: "Create new users"
-      summary: "Create new users"
-      requestBody:
-        required: true
-        description: "request body create new users"
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                email:
-                  type: string
-                password:
-                  type: string
-                role_id:
-                  type: string
-      responses:
-        200:
-          description: "Success create new users"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: number
-                  status:
-                    type: string
-                  data:
-                    type: object
-                    properties: 
-                      name:
-                        type: string
-                      email:
-                        type: string
-                      role_id:
-                        type: string
-                      creted_at:
-                        type: string
-                      updated_at:
-                        type: string
-  /users/login:
-    # TODO: IMPLEMENTATION JWT!
+  /users/signup:
     post:
       tags:
         - users
-      description: "User login and create token"
-      summary: "User login"
-      requestBody: 
-        required: true
-        description: "request body login user"
-        content: 
-          application/json: 
-            schema: 
-              type: object
-              properties:
-                email:
-                  type: string
-                password:
-                  type: string
-      responses:
-        200: 
-          description: "success login"
-          content:
-            application/json:
-              schema: 
-                type: object
-                properties:
-                  code:
-                    type: number
-                  status:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      token: 
-                        type: string
-  /users/current:
-    # TODO: IMPLEMENTATION JWT!
-    get:
-      tags: 
-          - users
-      description: "Get current users"
-      summary: "Get current users"
-      # TODO: ADD ATTRIBUTE IN REQUEST HEADER!
-      responses:
-        200:
-          description: "Success get todo by id"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: number
-                  status:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                      email:
-                        type: string
-                      role_id:
-                        type: string
-    patch:
-      # TODO: IMPLEMENTATION JWT!
-      tags: 
-          - users
-      description: "Update current users"
-      summary: "Update current users"
-      # TODO: ADD ATTRIBUTE IN REQUEST HEADER!
+      description: create new user
+      summary: create new user
       requestBody:
-        description: "request body update new todo"
+        required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                password:
-                  type: string
+              $ref: '#/components/schemas/UserRequest'
       responses:
         200:
-          description: "Success update Todo"
+          description: success create a new user
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: number
-                  status:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                      email:
-                        type: string
+                $ref: '#/components/schemas/TokenResponse'
+  /users/signin:
+    post:
+      tags:
+        - users
+      description: sign in user
+      summary: sign in user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        200:
+          description: user success sign in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
   /users/logout:
-    # TODO: IMPLEMENTATION JWT!
     delete:
       tags:
         - users
-      description: "Delete session users"
-      summary: "Delete session users"
-      # TODO: ADD ATTRIBUTE IN REQUEST HEADER!
+      security:
+        - bearerAuth: [ ]
+      description: sign out user
+      summary: sign out user
       responses:
         200:
-          description: "Success delete session users"
+          description: success logout
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: number
-                  status:
-                    type: string
-                  data:
-                    type: object
+                $ref: '#/components/schemas/DeleteResponse'
+  /users/refresh:
+    get:
+      tags:
+        - users
+      security:
+        - bearerAuth: [ ]
+      description: get new token, access token and refresh token
+      summary: get new token, access token and refresh token
+      responses:
+        200:
+          description: success get new token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenResponse"
+  /users/current:
+    get:
+      tags:
+        - users
+      security:
+        - bearerAuth: [ ]
+      description: get current user
+      summary: get current user
+      responses:
+        200:
+          description: success get current user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+    patch:
+      tags:
+        - users
+      security:
+        - bearerAuth: [ ]
+      description: update user
+      summary: update user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        200:
+          description: success update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
   /rooms:
     post:
-      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      security:
+        - bearerAuth: [ ]
       tags:
         - rooms
       description: "Create new rooms"
@@ -192,14 +122,7 @@ paths:
         content: 
           application/json: 
             schema:
-              type: object
-              properties: 
-                name:
-                  type: string
-                location:
-                  type: string
-                capacity:
-                  type: number
+              $ref: '#/components/schemas/RoomRequest'
       responses:
         200:
           description: "Success create new room"
@@ -213,18 +136,10 @@ paths:
                   status:
                     type: string
                   data:
-                    type: object
-                    properties:
-                      id:
-                        type: number
-                      name:
-                        type: string
-                      location:
-                        type: string
-                      capacity:
-                        type: number
+                    $ref: '#/components/schemas/DataRoomResponse'
     get:
-      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      security:
+        - bearerAuth: [ ]
       tags:
         - rooms
       description: "Get all rooms"
@@ -243,20 +158,12 @@ paths:
                     type: string
                   data:
                     type: array
-                    items: 
-                      type: object
-                      properties:
-                        id:
-                          type: number
-                        name:
-                          type: string
-                        location:
-                          type: string
-                        capacity:
-                          type: number
+                    items:
+                      $ref: '#/components/schemas/DataRoomResponse'
   /rooms/{roomId}:
     patch:
-      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      security:
+        - bearerAuth: [ ]
       tags:
         - rooms
       description: "Update a room by id"
@@ -273,14 +180,7 @@ paths:
         content: 
           application/json: 
             schema:
-              type: object
-              properties: 
-                name:
-                  type: string
-                location:
-                  type: string
-                capacity:
-                  type: number
+              $ref: '#/components/schemas/RoomRequest'
       responses:
         200:
           description: "Success update a room"
@@ -294,18 +194,10 @@ paths:
                   status:
                     type: string
                   data:
-                    type: object
-                    properties:
-                      id:
-                        type: number
-                      name:
-                        type: string
-                      location:
-                        type: string
-                      capacity:
-                        type: number
+                    $ref: '#/components/schemas/DataRoomResponse'
     get:
-      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      security:
+        - bearerAuth: [ ]
       tags:
         - rooms
       description: "Get a room by id"
@@ -321,7 +213,7 @@ paths:
         200:
           description: "Success get a room by id"
           content:
-            appliaction/json:
+            application/json:
               schema:
                 type: object
                 properties:
@@ -330,18 +222,10 @@ paths:
                   status:
                     type: string
                   data:
-                    type: object
-                    properties:
-                      id:
-                        type: number
-                      name:
-                        type: string
-                      location:
-                        type: string
-                      capacity:
-                        type: number
+                    $ref: '#/components/schemas/DataRoomResponse'
     delete:
-      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      security:
+        - bearerAuth: [ ]
       tags:
         - rooms
       description: "Delete a room by id"
@@ -357,21 +241,15 @@ paths:
         200:
           description: "Success delete a room by id"
           content:
-            appliaction/json:
+            application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: number
-                  status:
-                    type: string
-                  data:
-                    type: object
+                $ref: '#/components/schemas/DeleteResponse'
   /rooms/{roomId}/schedules:
-    # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
     get:
+      security:
+        - bearerAuth: [ ]
       tags:
-      - schdules
+      - schedules
       description: "Get all schedules in a room"
       summary: "Get all schedules in a room"
       parameters: 
@@ -396,20 +274,12 @@ paths:
                   data:
                     type: array 
                     items:
-                      type: object
-                      properties:
-                        id:
-                          type: number
-                        day_of_week:
-                          type: string
-                        open_time:
-                          type: string
-                        close_time:
-                          type: string
+                      $ref: '#/components/schemas/DataRoomSchedulesResponse'
     post:
-      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      security:
+        - bearerAuth: [ ]
       tags:
-        - schdules
+        - schedules
       description: "Create a new schedule in a room"
       summary: "Create a new schedule in a room"
       parameters: 
@@ -425,14 +295,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                day_of_week:
-                  type: string
-                open_time:
-                  type: string
-                close_time:
-                  type: string
+              $ref: '#/components/schemas/RoomSchedulesRequest'
       responses:
         200:
           description: "success create new schedule in a room"
@@ -446,21 +309,13 @@ paths:
                   status:
                     type: string
                   data:
-                    type: object
-                    properties:
-                        id:
-                          type: number
-                        day_of_week:
-                          type: string
-                        open_time:
-                          type: string
-                        close_time:
-                          type: string
+                    $ref: '#/components/schemas/DataRoomSchedulesResponse'
   /rooms/{roomId}/schedules/{scheduleId}:
-    # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
     patch:
+      security:
+        - bearerAuth: [ ]
       tags:
-        - schdules
+        - schedules
       description: "Update schedule in a room"
       summary: "Update schedule in a room"
       parameters: 
@@ -481,14 +336,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                day_of_week:
-                  type: string
-                open_time:
-                  type: string
-                close_time:
-                  type: string
+              $ref: '#/components/schemas/RoomSchedulesRequest'
       responses:
         200:
           description: "success update schedule in a room"
@@ -502,20 +350,12 @@ paths:
                   status:
                     type: string
                   data:
-                    type: object
-                    properties:
-                        id:
-                          type: number
-                        day_of_week:
-                          type: string
-                        open_time:
-                          type: string
-                        close_time:
-                          type: string
+                    $ref: '#/components/schemas/DataRoomSchedulesResponse'
     delete:
-      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      security:
+        - bearerAuth: [ ]
       tags:
-        - schdules
+        - schedules
       description: "Delete schedule in a room"
       summary: "Delete schedule in a room"
       parameters: 
@@ -537,17 +377,11 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: number
-                  status:
-                    type: string
-                  data:
-                    type: object
+                $ref: '#/components/schemas/DeleteResponse'
   /rooms/{roomId}/reservations:
-    # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
     get:
+      security:
+        - bearerAuth: [ ]
       tags:
       - reservations
       description: "Get all reservations in a room"
@@ -574,25 +408,11 @@ paths:
                   data:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        user_id:
-                          type: number
-                        status:
-                          type: string
-                        start_time:
-                          type: string
-                        end_time:
-                          type: string
-                        purpose:
-                          type: string
-                        created_at:
-                          type: string
-                        updated_at:
-                          type: string
+                      $ref: '#/components/schemas/DataRoomReservationResponse'
   /rooms/{roomId}/reservations/{reservationId}:
     patch:
-    # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      security:
+        - bearerAuth: [ ]
       tags:
         - reservations
       description: "Update reservation in a room"
@@ -615,16 +435,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                status:
-                  type: string
-                start_time:
-                  type: string
-                end_time:
-                  type: string
-                purpose:
-                  type: string
+              $ref: '#/components/schemas/ReservationRequest'
       responses:
        200:
           description: "success update reservation in a room"
@@ -638,24 +449,10 @@ paths:
                   status:
                     type: string
                   data:
-                    type: object
-                    properties:
-                        user_id:
-                          type: number
-                        status:
-                          type: string
-                        start_time:
-                          type: string
-                        end_time:
-                          type: string
-                        purpose:
-                          type: string
-                        created_at:
-                          type: string
-                        updated_at:
-                          type: string
+                    $ref: '#/components/schemas/DataRoomReservationResponse'
     delete:
-    # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      security:
+        - bearerAuth: [ ]
       tags:
         - reservations
       description: "Delete reservation in a room"
@@ -679,17 +476,11 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: number
-                  status:
-                    type: string
-                  data:
-                    type: object
+                $ref: '#/components/schemas/DeleteResponse'
   /users/{userId}/reservations:
     get:
-      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      security:
+        - bearerAuth: [ ]
       tags:
         - reservations
       description: "Get all reservation in user"
@@ -716,25 +507,11 @@ paths:
                   data:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        room_id:
-                          type: number
-                        status:
-                          type: string
-                        start_time:
-                          type: string
-                        end_time:
-                          type: string
-                        purpose:
-                          type: string
-                        created_at:
-                          type: string
-                        updated_at:
-                          type: string
+                      $ref: '#/components/schemas/DataUserReservationResponse'
   /users/{userId}/reservations/{reservationId}:
     patch:
-    # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      security:
+        - bearerAuth: [ ]
       tags:
         - reservations
       description: "Update reservation in user"
@@ -757,16 +534,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                status:
-                  type: string
-                start_time:
-                  type: string
-                end_time:
-                  type: string
-                purpose:
-                  type: string
+              $ref: '#/components/schemas/ReservationRequest'
       responses:
        200:
           description: "success update reservation in a user"
@@ -780,24 +548,10 @@ paths:
                   status:
                     type: string
                   data:
-                    type: object
-                    properties:
-                        room_id:
-                          type: number
-                        status:
-                          type: string
-                        start_time:
-                          type: string
-                        end_time:
-                          type: string
-                        purpose:
-                          type: string
-                        created_at:
-                          type: string
-                        updated_at:
-                          type: string
+                    $ref: '#/components/schemas/DataUserReservationResponse'
     delete:
-    # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      security:
+        - bearerAuth: [ ]
       tags:
         - reservations
       description: "Delete reservation in user"
@@ -821,17 +575,11 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: number
-                  status:
-                    type: string
-                  data:
-                    type: object
+                $ref: '#/components/schemas/DeleteResponse'
   /reservations:
     get:
-      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
+      security:
+        - bearerAuth: [ ]
       tags:
         - reservations
       description: "Get all reservation"
@@ -851,77 +599,163 @@ paths:
                   data:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        user_id:
-                          type: number
-                        room_id:
-                          type: number
-                        status:
-                          type: string
-                        start_time:
-                          type: string
-                        end_time:
-                          type: string
-                        purpose:
-                          type: string
-                        created_at:
-                          type: string
-                        updated_at:
-                          type: string
-    post:
-      # TODO: CAN BE MODIFIED (DEPENDING ON THE NEED)
-      tags:
-        - reservations
-      description: "Create a new reservation"
-      summary: "Create a new reservation"
-      requestBody:
-        description: "request body for create a reservation"
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                user_id:
-                  type: number
-                room_id:
-                  type: number
-                status:
-                  type: string
-                start_time:
-                  type: string
-                end_time:
-                  type: string
-                purpose:
-                  type: string
-      responses:
-        200:
-          description: "success create a new reservation"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: number
-                  status:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      user_id:
-                        type: number
-                      room_id:
-                        type: number
-                      status:
-                        type: string
-                      start_time:
-                        type: string
-                      end_time:
-                        type: string
-                      purpose:
-                        type: string
-                      created_at:
-                        type: string
-                      updated_at:
-                        type: string
+                      $ref: '#/components/schemas/ReservationResponse'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    UserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    UserResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        status:
+          type: string
+        data:
+          type: object
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+            role:
+              type: string
+    TokenResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        status:
+          type: string
+        data:
+          type: object
+          properties:
+            access_token:
+              type: string
+            refresh_token:
+              type: string
+    RoomRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        location:
+          type: string
+        capacity:
+          type: number
+    DataRoomResponse:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        location:
+          type: string
+        capacity:
+          type: number
+    DeleteResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        status:
+          type: string
+        data:
+          type: object
+    DataRoomSchedulesResponse:
+      type: object
+      properties:
+        id:
+          type: number
+        day_of_week:
+          type: string
+        open_time:
+          type: string
+        close_time:
+          type: string
+    RoomSchedulesRequest:
+      type: object
+      properties:
+        day_of_week:
+          type: string
+        open_time:
+          type: string
+        close_time:
+          type: string
+    DataRoomReservationResponse:
+      type: object
+      properties:
+        user_id:
+          type: number
+        status:
+          type: string
+        start_time:
+          type: string
+        end_time:
+          type: string
+        purpose:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    ReservationRequest:
+      type: object
+      properties:
+        status:
+          type: string
+        start_time:
+          type: string
+        end_time:
+          type: string
+        purpose:
+          type: string
+    DataUserReservationResponse:
+      type: object
+      properties:
+        room_id:
+          type: number
+        status:
+          type: string
+        start_time:
+          type: string
+        end_time:
+          type: string
+        purpose:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    ReservationResponse:
+      type: object
+      properties:
+        user_id:
+          type: number
+        room_id:
+          type: number
+        status:
+          type: string
+        start_time:
+          type: string
+        end_time:
+          type: string
+        purpose:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
